@@ -1,4 +1,4 @@
-// BLHToXYZ.cpp : �������̨Ӧ�ó������ڵ㡣
+// BLHToXYZ.cpp : 定义控制台应用程序的入口点。
 //
 
 #include "stdafx.h"
@@ -54,34 +54,41 @@ static const std::vector<std::string>& scan_files(const std::string& rootPath, s
 
 void LoadCSV(std::string str_path, std::vector<cv::Point3d>& vec_geo_point, std::vector<int>& vec_intansity);
 
+// 经度纬度转投影坐标的使用DEMO
 void ConvertShipCorrd()
 {
+	// 定义坐标转换对象
 	CoordinateConvert* pConvert = new CoordinateConvert();
+	// 定义坐标转换的参数，例如：椭球体定义，中心经线，投影方式等（此部分需要一定的地图学基础）
 	if (!pConvert->Init("+proj=latlong +ellps=WGS84  +datum=WGS84 +no_defs", "+proj=tmerc +lat_0=0 +lon_0=117 +k=1 +x_0=39500000 +y_0=0 +ellps=GRS80 +units=m +no_defs")) {
 		std::cerr << "Can not init proj.4 func,return." << std::endl;
 		return ;
 	}
 
-	std::vector<cv::Point3d> vec_geo_point;
-	std::vector<cv::Point3d> vec_gass_point;
+	std::vector<cv::Point3d> vec_geo_point;		// 经纬度坐标
+	std::vector<cv::Point3d> vec_gass_point;	// 投影坐标
 	vec_gass_point.clear();
 	vec_geo_point.clear();
 
-	vec_geo_point.push_back(cv::Point3d(113.610133, 22.374701, -6.400000));
-	pConvert->ProjPoints(vec_geo_point, vec_gass_point);
+	vec_geo_point.push_back(cv::Point3d(113.610133, 22.374701, -6.400000));	// 经纬度 搞成
+	pConvert->ProjPoints(vec_geo_point, vec_gass_point);	// 投影
 	cout << vec_gass_point[0] << endl;
 }
 
 int main()
 {
+	// GPS数据预处理，提取$GPGGA数据，并将 度/分 格式转换为 度格式 
 	YunZhou solver;
 
-	solver.GPSFillter("E:\\01Yunzhou\\10.19����\\������Ŀ��GPS������\\south.txt");
-	//solver.CreateNewFile("E:\\01Yunzhou\\10.19����\\������Ŀ��GPS������");
+	solver.GPSFillter("E:\\01Yunzhou\\10.19数据\\下午有目标GPS的数据\\south.txt");
+	//solver.CreateNewFile("E:\\01Yunzhou\\10.19数据\\下午有目标GPS的数据");
 
-
+	// 以下函数是经度纬度转投影坐标的使用DEMO
 	ConvertShipCorrd();
 	return 0;
+	
+	// 以下代码与云洲项目无关，不用关注
+	
 	CoordinateConvert* pConvert = new CoordinateConvert();
 
 //	if (!pConvert->Init("+proj=latlong +ellps=WGS84  +datum=WGS84 +no_defs", "+proj=tmerc +lat_0=0 +lon_0=117 +k=1 +x_0=39500000 +y_0=0 +ellps=GRS80 +units=m +no_defs")) {
