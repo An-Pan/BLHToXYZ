@@ -13,6 +13,7 @@
 
 using namespace cv;
 
+// 遍历目录，获取路径下所有文件
 static const vector<string>& scan_files_recursion(const string& rootPath, vector<string>& container = *(new vector<string>())) {
 	namespace fs = boost::filesystem;
 	fs::path fullpath(rootPath);
@@ -42,6 +43,7 @@ static const vector<string>& scan_files_recursion(const string& rootPath, vector
 
 YunZhou::YunZhou()
 {
+	// 创建并初始化坐标转换对象
 	pConvert = new CoordinateConvert();
 
 	if (!pConvert->Init("+proj=latlong +ellps=WGS84  +datum=WGS84 +no_defs", "+proj=tmerc +lat_0=0 +lon_0=117 +k=1 +x_0=39500000 +y_0=0 +ellps=GRS80 +units=m +no_defs")) {
@@ -55,7 +57,7 @@ YunZhou::~YunZhou()
 {
 }
 
-
+// 读取经纬度坐标文件，将经纬度转换为投影坐标并写入到新的文件中
 void YunZhou::CreateNewFile(const string& base_path)
 {
 	std::vector<string> txt_list;
@@ -100,13 +102,14 @@ void YunZhou::CreateNewFile(const string& base_path)
 	}
 }
 
+// 解析原始GPS数据中的$GPGGA语句，并转换 度/分 格式 为 度格式，有部分hard code 
 void YunZhou::GPSFillter(const string& file_path)
 {
-	ifstream file_in("E:\\01Yunzhou\\10.19����\\������Ŀ��GPS������\\south.txt");
+	ifstream file_in("E:\\01Yunzhou\\10.19数据\\下午有目标GPS的数据\\south.txt");
 
 	char buf[2048] = { 0 };
 
-	ofstream file_out("E:\\01Yunzhou\\10.19����\\������Ŀ��GPS������\\gps_filter.txt");
+	ofstream file_out("E:\\01Yunzhou\\10.19数据\\下午有目标GPS的数据\\gps_filter.txt");
 
 	while (file_in.getline(buf, 2048)) {
 		string strbuf = buf;
