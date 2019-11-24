@@ -129,6 +129,7 @@ int main()
 	for (auto it : vecLaserPoint) {
 
 		cv::Point3d gass_point;
+		// 若要实现广州地区的逆变换，这里应改为 gass_point.x = it.x + 38000000
 		gass_point.x = it.x + 46000000;
 		gass_point.y = it.y;
 		gass_point.z = it.z - 37.906;
