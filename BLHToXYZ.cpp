@@ -60,7 +60,7 @@ void ConvertShipCorrd()
 	// 定义坐标转换对象
 	CoordinateConvert* pConvert = new CoordinateConvert();
 	// 定义坐标转换的参数，例如：椭球体定义，中心经线，投影方式等（此部分需要一定的地图学基础）
-	if (!pConvert->Init("+proj=latlong +ellps=WGS84  +datum=WGS84 +no_defs", "+proj=tmerc +lat_0=0 +lon_0=117 +k=1 +x_0=39500000 +y_0=0 +ellps=GRS80 +units=m +no_defs")) {
+	if (!pConvert->Init("+proj=latlong +ellps=WGS84  +datum=WGS84 +no_defs", "+proj=tmerc +lat_0=0 +lon_0=114 +k=1 +x_0=38500000 +y_0=0 +ellps=GRS80 +units=m +no_defs")) {
 		std::cerr << "Can not init proj.4 func,return." << std::endl;
 		return ;
 	}
